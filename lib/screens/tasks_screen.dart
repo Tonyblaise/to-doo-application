@@ -2,21 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/add_tasks.dart';
-import "package:todo_app/widgets/tasks_list.dart";
-import 'package:todo_app/models/tasks.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  State<TasksScreen> createState() => _TasksScreenState();
-}
+import 'package:provider/provider.dart';
+import 'package:todo_app/models/tasks_data.dart';
+import 'package:todo_app/widgets/tasks_list.dart';
 
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: "Buy milk"),
-    Task(name: "Buy eggs"),
-    Task(name: "Buy bread"),
-  ];
-
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +41,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 Text(
-                  "${tasks.length} Tasks",
+                  "${Provider.of<TaskData>(context).tasks.length} Tasks",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -64,7 +55,7 @@ class _TasksScreenState extends State<TasksScreen> {
               padding: EdgeInsets.symmetric(
                 horizontal: 20,
               ),
-              child: TasksList(tasks),
+              child: TasksList(),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -77,22 +68,15 @@ class _TasksScreenState extends State<TasksScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() {
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return AddTasksScreen(addTaskCallback: (newTaskTitle) {
-                setState(() {
-                  tasks.add(Task(name: newTaskTitle));
+          child: Icon(Icons.add),
+          backgroundColor: Colors.lightBlueAccent,
+          onPressed: (() {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return AddTasksScreen();
                 });
-                Navigator.pop(context);
-              });
-            },
-          );
-        }),
-        child: Icon(Icons.add),
-        backgroundColor: Colors.lightBlueAccent,
-      ),
+          })),
     );
   }
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/container.dart';
+import 'package:todo_app/models/tasks_data.dart';
 import 'package:todo_app/screens/add_tasks.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/models/tasks.dart';
+import 'package:provider/provider.dart';
 
 class AddTasksScreen extends StatelessWidget {
-  const AddTasksScreen({super.key, required this.addTaskCallback});
-  final Function addTaskCallback;
-
   @override
   Widget build(BuildContext context) {
-    String? newTaskTitle;
+    String newTaskTitle = "";
 
     return Container(
       color: Color(0xff757575),
@@ -46,8 +46,9 @@ class AddTasksScreen extends StatelessWidget {
                   backgroundColor: Colors.lightBlueAccent),
               onPressed: (() {
                 //Add tasks to our list
-                print(newTaskTitle);
-                addTaskCallback(newTaskTitle);
+
+                Provider.of<TaskData>(context).addTask(newTaskTitle);
+                Navigator.pop(context);
               }),
               child: Text("Add"),
             ),
